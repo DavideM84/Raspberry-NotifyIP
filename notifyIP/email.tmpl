@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Octoprint - IP Notification</title>
+    <style type="text/css">
+        body { background-color: hsl(293, 11%, 86%); font-family: 'Trebuchet MS', sans-serif; }
+        .container { padding-top: 20px;}
+    </style>
+<head>
+<body>
+    <div class="container">
+        <div style="float:left;">
+            <img src="https://octoprint.org/assets/img/logo.png" style="float: right; padding-right: 10px; width: 50px;" />
+        </div>
+        <div  style="margin-top: 10px;">
+            <strong>Octoprint</strong>
+            <span style="font-size:24px; font-weight: bold; padding-left: 25px;">IP Notification</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <hr />
+        <div class="row">
+            <p style="text-align: center;">
+                ##DATETIME##<br /><br />
+                Current IP:<br />
+                <span style="font-size:24px;"><strong>##IP##</strong></span> <br />
+                <s>##OLD_IP##</s>
+                <br /><br /><br />
+                <a href="http://##IP##:1984/" target="_blank" title="Open Octoprint in browser">Open Octoprint</a>
+                <br /><br />
+                <hr />
+                <small>Octoprint IP Notification</small>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

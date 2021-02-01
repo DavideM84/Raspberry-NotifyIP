@@ -1,0 +1,7 @@
+
+crontab -e
+
+@reboot sleep 30 && python3 /home/pi/notifyIP/notifyIP.py >> /home/pi/notifyIP/$
+0 * * * * python3 /home/pi/notifyIP/notifyIP.py >> /home/py/notifyIP/notifyIP.l$
+
+Si avvia al boot + esegue ogni ora
