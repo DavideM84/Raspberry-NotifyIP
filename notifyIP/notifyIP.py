@@ -9,17 +9,17 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 #FILES
-FILE_EMAIL = '/home/pi/src/notifyIP/email.tmpl'
-FILE_IP = '/home/pi/src/notifyIP/prevIP.dat'
+FILE_EMAIL = '/home/pi/src/notifyIP/email.tmpl' # PATH TO EMAIL TEMPLATE
+FILE_IP = '/home/pi/src/notifyIP/prevIP.dat'    # TMP FILE
 # STMP
-SMTP_HOST = "smtp_url"              # URL
-SMTP_PORT = 587                     # PORT
-SMTP_USERNAME = "smtp_username"     # USERNAME
-SMTP_PWD = "smtp_password"          # PASSWORD
+SMTP_HOST = "smtp_url"                          # SMTP HOST
+SMTP_PORT = 587                                 # SMTP PORT
+SMTP_USERNAME = "smtp_username"                 # SMTP USERNAME
+SMTP_PWD = "smtp_password"                      # SMTP PASSWORD
 # EMAIL
-SUBJECT = "Octoprint - IP Notification"
-FROM = "d.mencarelli@outlook.com"
-TO = "dmencarelli.84@gmail.com"
+FROM = "address_from"                           # FROM
+TO = "address_to"                               # TO
+SUBJECT = "Raspberry - IP Notification"         # SUBJECT
 
 
 def getCurrentIP():
@@ -52,12 +52,12 @@ def sendNotifyEmail(prevIp, currIp):
     else:
         print(f"Can't find template file: '%s'" % FILE_EMAIL)
     # parse
-    now = datetime.now()
-    content = content.replace("##DATETIME##", now.strftime("%d/%m/%Y %H:%M:%S"))
+    content = content.replace("##DATETIME##", NOW_STR)
     content = content.replace("##IP##", currIp)
     content = content.replace("##OLD_IP##", prevIp)
-    part1 = MIMEText(f"Octoprint New IP: %s" % currIp, "plain")
-    part2 = MIMEText(content, "html")
+    # email body
+    part1 = MIMEText(f"NEW IP: %s" % currIp, "plain")   # text/plain
+    part2 = MIMEText(content, "html")                   # text/html
     msg.attach(part1)
     msg.attach(part2)
     # send the email
@@ -66,21 +66,22 @@ def sendNotifyEmail(prevIp, currIp):
         smtp.starttls(context=context)
         smtp.login(SMTP_USERNAME, SMTP_PWD)
         smtp.send_message(msg)
-    
+
     return True
 
 # MAIN
+NOW_STR = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+print(NOW_STR)
+# CHECK FOR --force ARGUMENT
 parser = argparse.ArgumentParser()
 parser.add_argument('--force', nargs='?', const=1, type=int)
 args = parser.parse_args()
-
+# IPs
 prevIP = getPreviousIP()
 currIP = getCurrentIP()
-
-print("")
 print("Previous IP: %s" % prevIP)
 print("Current  IP: %s" % currIP)
-
+# CHECK
 if ((prevIP != currIP) or (args.force == 1)):
     sendNotifyEmail(prevIP, currIP)
     print("Notification sent")
